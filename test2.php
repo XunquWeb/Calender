@@ -72,7 +72,7 @@
 	var url = "ajax_output.php";
 
 	//需要POST的值，把每个变量都通过&来联接
-	var postStr   = "user_name2="+ userName +"&user_id="+ userId ;
+	var postStr   = "user_name="+ userName +"&user_id="+ userId ;
 
 	//实例化Ajax
 	//var ajax = InitAjax();
