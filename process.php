@@ -53,32 +53,53 @@
 	}
 
 
+
 	$con = mysql_connect('localhost', 'root', '123456')
 		or die("fail1");
 	mysql_select_db('xunqu')
 		or die("fail2");
 	mysql_query("SET NAMES UTF8");
 
+
+	mysql_query(
+		"
+			CREATE TABLE IF NOT EXISTS `calender_choose` (
+			  `id` int(11) NOT NULL,
+			  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+			  `year` int(10) NOT NULL,
+			  `month` int(10) NOT NULL,
+			  `day`  int(10) NOT NULL
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		"
+	);
+
+
+
+
 	for($i=0,$j=strlen($datestring[0]);$i<$j;$i++){
     	if($datestring[0][$i]=='1')
     	{
-    		$insert = "INSERT INTO calender_choose (id, name, year, month, day) 
-				 		 VALUES ('$id', '$name', '2015', '(int)($i/31+1)', '($i%31)+1 )'";
+    		$month = (int)($i/31+1);
+    		$day = ($i%31)+1 ;
+    		$insert = "INSERT INTO calender_choose(id, name, year, month, day) 
+				 		 VALUES ('{$id}', '{$name}', '2015', '{$month}', '{$day})'";
     		$result=mysql_query($insert,$con);//执行insert语句
 			//判断执行结果
 			if($result){
-				echo "<script>alert('注册成功！');</script>";
+				echo "1";
 			}
 			else{
-				echo "<script>alert('注册失败！');</script>";
+				echo "2";
 			}
     	}
 	}
 	for($i=0,$j=strlen($datestring[1]);$i<$j;$i++){
     	if($datestring[1][$i]=='1')
     	{
-    		$insert = "INSERT INTO calender_choose (id, name, year, month, day) 
-				 		 VALUES ('$id', '$name', '2016', '(int)($i/31+1)', '($i%31)+1 )'";
+    		$month = (int)($i/31+1);
+    		$day = ($i%31)+1 ;
+    		$insert = "INSERT INTO calender_choose(id, name, year, month, day) 
+				 		 VALUES ('{$id}', '{$name}', '2016', '{$month}', '{$day}')";
     		$result=mysql_query($insert,$con);//执行insert语句
 			//判断执行结果
 			if($result){
@@ -92,8 +113,10 @@
 	for($i=0,$j=strlen($datestring[3]);$i<$j;$i++){
     	if($datestring[2][$i]=='1')
     	{
-    		$insert = "INSERT INTO calender_choose (id, name, year, month, day) 
-				 		 VALUES ('$id', '$name', '2017', '(int)($i/31+1)', '($i%31)+1 )'";
+    		$month = (int)($i/31+1);
+    		$day = ($i%31)+1 ;
+    		$insert = "INSERT INTO calender_choose(id, name, year, month, day) 
+				 		 VALUES ('{$id}', '{$name}', '2017', '{$month}', '{$day}')";
     		$result=mysql_query($insert,$con);//执行insert语句
 			//判断执行结果
 			if($result){
@@ -104,6 +127,10 @@
 			}
    		}
 	}
+
+	echo $insert;
+	echo 1;
+	echo $result;
 
 	mysql_close($con);
 
