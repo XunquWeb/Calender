@@ -1,5 +1,0 @@
-<?
-     echo $_POST['user_name'];
-     echo $_POST['user_id'];
-     
-?>
