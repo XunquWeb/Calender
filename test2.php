@@ -24,9 +24,9 @@
 	  var month = today.getMonth()+1;     //获取月份
 
 	  var user_date=new Array();         //先声明一维 
-       for(var i=0;i<3;i++){          //一维长度为10 
-          user_date[i]=new Array();    //在声明二维 
-          for(var j=0;j<13;j++){      //二维长度为20 
+       for(var i=0;i<3;i++){             //一维长度为10 
+          user_date[i]=new Array();      //在声明二维 
+          for(var j=0;j<14;j++){         //二维长度为20 
              user_date[i][j]=new Array();
              for(var k=0;k<33;k++)
                user_date[i][j][k] = 0; 
@@ -56,70 +56,14 @@
 	}
 */
 
+//
+	  var date = today.getDate();	      //获取日期
+	  //alert(date);
+	  var day = today.getDay();           //获取星期
 
-	function saveUserInfo()
-	{
-		//feature();
-	//获取接受返回信息层
-	var msg = document.getElementById("msg");
+var firstDay = day-(date%7-1);       //!important 计算月初星期数
 
-	//获取表单对象和用户信息值
-	var f = document.user_info;
-	var userName = f.user_name.value;
-	var userId   = f.user_id.value;
-	
-	//接收表单的URL地址
-	var url = "ajax_output.php";
-
-	//需要POST的值，把每个变量都通过&来联接
-	var postStr   = "user_name="+ userName +"&user_id="+ userId ;
-
-	//实例化Ajax
-	//var ajax = InitAjax();
-
-	          var ajax = false;
-	         //开始初始化XMLHttpRequest对象
-	         if(window.XMLHttpRequest) { //Mozilla 浏览器
-	                 ajax = new XMLHttpRequest();
-	                 if (ajax.overrideMimeType) {//设置MiME类别
-	                         ajax.overrideMimeType("text/xml");
-	                 }
-	         }
-	         else if (window.ActiveXObject) { // IE浏览器
-	                 try {
-	                         ajax = new ActiveXObject("Msxml2.XMLHTTP");
-	                 } catch (e) {
-	                         try {
-	                                 ajax = new ActiveXObject("Microsoft.XMLHTTP");
-	                         } catch (e) {}
-	                 }
-	         }
-	         if (!ajax) { // 异常，创建对象实例失败
-	                 window.alert("不能创建XMLHttpRequest对象实例.");
-	                 return false;
-	         }
-	                
-	                
-	                
-
-	//通过Post方式打开连接
-	ajax.open("POST", url, true);
-
-	//定义传输的文件HTTP头信息
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-
-	//发送POST数据
-	ajax.send(postStr);
-
-	//获取执行状态
-	ajax.onreadystatechange = function() { 
-	   //如果执行状态成功，那么就把返回信息写到指定的层里
-	   if (ajax.readyState == 4 && ajax.status == 200) { 
-	    msg.innerHTML = ajax.responseText; 
-	   } 
-	} 
-	}
-
+//
 
 //日历
 $(document).ready(function(){	
@@ -147,9 +91,6 @@ $(document).ready(function(){
 	  if(month<10){
 		 month="0"+month; 
 	  }
-	  var date = today.getDate();	      //获取日期
-	  //alert(date);
-	  var day = today.getDay();           //获取星期
 
 	  var monthsNum=[31,28,31,30,31,30,31,31,30,31,30,31];
 	  var isleapyear = FullYear%4;        //判断闰年
@@ -161,8 +102,7 @@ $(document).ready(function(){
       if(day==0){
 		  day = 7;
 	  }
-	  var firstDay = day-(date%7-1);       //!important 计算月初星期数
-
+	  
 	  if(firstDay==7){                     //如果月初为七，归零
 		  firstDay =0;
 	  }
@@ -302,8 +242,7 @@ $(document).ready(function(){
 				$("li.month-cell span").eq(j).text(j-f+1).parent().removeClass("pink").addClass("gray");
 				if(user_date[nextyear-2015][nextmonth][j-f+1]==1)
 					$("li.month-cell span").eq(j).parent().addClass("green");
-			}
-			  
+			}			  
 			//$("li.month-cell span").eq(firstDay-1+date).parent().addClass("red");
 			if(month<10)
 				$(".month-head span").eq(1).text(FullYear+"年0"+month+"月");
@@ -454,6 +393,182 @@ $(document).ready(function(){
 	});
 
 })
+
+
+	function postdate()
+	{
+
+
+					var datestring=new Array();
+					for(var i=0;i<=2;i++){
+						datestring[i] = '';
+						for(var j=1;j<13;j++){
+							for(var k=1;k<32;k++){
+								//var chartmp = '' + user_date[i][j][k];
+								datestring[i] = datestring[i] + user_date[i][j][k];
+
+							}
+						}
+						//alert(datestring[i]);
+					}
+
+					//document.write(datestring);
+
+					var msg = document.getElementById("msg");
+						var f = document.user_info;
+						var userName = f.user_name.value;
+						var userId   = f.user_id.value;
+
+		
+					var temp = document.createElement("form");        
+				    temp.action = "process.php";        
+				    temp.method = "post";        
+				    temp.style.display = "none";        
+				            
+				        var opt = document.createElement("textarea");        
+				        opt.name = "date_push0";        
+				        opt.value = datestring[0];
+				        //alert(datestring[0]);        
+						//opt.style.display = "none";        
+				      				      
+				        // alert(opt.name)        
+				        temp.appendChild(opt);
+				        var opt3 = document.createElement("textarea");        
+				        opt3.name = "date_push1";        
+				        opt3.value = datestring[1];        
+						//opt.style.display = "none";        
+				      				      
+				        // alert(opt.name)        
+				        temp.appendChild(opt3);
+				        var opt4 = document.createElement("textarea");        
+				        opt4.name = "date_push2";        
+				        opt4.value = datestring[2];        
+						//opt.style.display = "none";        
+				      				      
+				        // alert(opt.name)        
+				        temp.appendChild(opt4);
+
+				        var opt1 = document.createElement("textarea");        
+				        opt1.name = "username";        
+				        opt1.value = userName;        
+						//opt1.style.display = "none";        
+				      				      
+				        // alert(opt.name)        
+				        temp.appendChild(opt1);
+
+				        var opt2 = document.createElement("textarea");        
+				        opt2.name = "userid";        
+				        opt2.value = userId;        
+						//opt2.style.display = "none";        
+				      				      
+				        // alert(opt.name)        
+				        temp.appendChild(opt2);        
+				            
+				    //document.body.appendChild(temp);        
+				    temp.submit();   
+		           
+
+	}
+
+
+	function saveUserInfo()
+	{
+		//alert("123");
+		//feature();
+	    featuresave_out();
+	//获取接受返回信息层
+	//post the date status
+		postdate();
+
+	//var msg = document.getElementById("msg");
+/*
+	//获取表单对象和用户信息值
+	var f = document.user_info;
+	var userName = f.user_name.value;
+	var userId   = f.user_id.value;
+	
+	//接收表单的URL地址
+	var url = "process.php";
+
+	//需要POST的值，把每个变量都通过&来联接
+	var postStr   = "user_name="+ userName +"&user_id="+ userId ;
+
+	//实例化Ajax
+	//var ajax = InitAjax();
+
+	          var ajax = false;
+	         //开始初始化XMLHttpRequest对象
+	         if(window.XMLHttpRequest) { //Mozilla 浏览器
+	                 ajax = new XMLHttpRequest();
+	                 if (ajax.overrideMimeType) {//设置MiME类别
+	                         ajax.overrideMimeType("text/xml");
+	                 }
+	         }
+	         else if (window.ActiveXObject) { // IE浏览器
+	                 try {
+	                         ajax = new ActiveXObject("Msxml2.XMLHTTP");
+	                 } catch (e) {
+	                         try {
+	                                 ajax = new ActiveXObject("Microsoft.XMLHTTP");
+	                         } catch (e) {}
+	                 }
+	         }
+	         if (!ajax) { // 异常，创建对象实例失败
+	                 window.alert("不能创建XMLHttpRequest对象实例.");
+	                 return false;
+	         }
+	                
+	                
+	                
+
+	//通过Post方式打开连接
+	ajax.open("POST", url, true);
+
+	//定义传输的文件HTTP头信息
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+
+	//发送POST数据
+	ajax.send(postStr);
+
+	//获取执行状态
+	ajax.onreadystatechange = function() { 
+	   //如果执行状态成功，那么就把返回信息写到指定的层里
+	   if (ajax.readyState == 4 && ajax.status == 200) { 
+	    msg.innerHTML = ajax.responseText; 
+	   } 
+	}
+*/
+
+}
+
+	//var FirstDay = today.getDay()-(today.getDate()%7-1);       //!important 计算月初星期数
+
+	var MonthsNum=[31,28,31,30,31,30,31,31,30,31,30,31];
+	  
+	function featuresave_out()
+	{
+
+		var f = firstDay;
+		//alert("firstday: "+f);
+		var count=0;
+		//var userDate = new Array();
+		//var str=document.getElementsByTagName("li");//获取检索内容块
+ 		//alert(str.lenght);
+ 		for(var j=1;j<=MonthsNum[m];j++){
+ 			var tmp = parseInt($("li.month-cell span").eq(f).text());
+		  	var tmpmonth = parseInt(month);
+		  if($("li.month-cell span").eq(f).parent().hasClass("green")){
+		  	user_date[FullYear-2015][tmpmonth][tmp] = 1;
+		  }
+		  else
+		  {
+		  	user_date[FullYear-2015][tmpmonth][tmp] = 0;
+		  	//alert("tmpmonth: "+tmpmonth+" "+"tmp: "+tmp+" </br>");
+		  }
+		  f++; 
+	  	}
+	}
+
 
 </script>
 
