@@ -8,15 +8,15 @@
     $id = $_POST['userid'];
     $name = $_POST['username'];
 
-    $datestring = array("","","");
+    $datestring = array('2015' => $_POST['date_push0'],
+    				'2016' => $_POST['date_push1'],
+    				'2017' => $_POST['date_push2']);
 
-    $datestring[0] = $_POST['date_push0'];
-    $datestring[1] = $_POST['date_push1'];
-    $datestring[2] = $_POST['date_push2'];
     var_dump($datestring);
-    var_dump($_POST);
 
-   
+    echoDate($datestring);
+
+   	/*
     for($i=0,$j=strlen($datestring[0]);$i<$j;$i++){
     	if($datestring[0][$i]=='1')
     	{
@@ -53,7 +53,7 @@
     		echo "</br>";
     	}
 	}
-
+	*/
 
 
 	$con = mysql_connect('localhost', 'root', '')
@@ -73,11 +73,13 @@
 			  `day`  int(10) NOT NULL
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		"
-	);
+	)
+	or die("fail3");
+
+	insertDate($datestring, $id, $name, $con);
 
 
-
-
+	/*
 	for($i=0,$j=strlen($datestring[0]);$i<$j;$i++){
     	if($datestring[0][$i]=='1')
     	{
@@ -131,11 +133,53 @@
    		}
 	}
 
-	echo $insert;
-	echo 1;
-	echo $result;
+	*/
 
 	mysql_close($con);
 
+
+	function echoDate($arr=array()){
+   		foreach ($arr as $key => $value) {
+   			for($i=0, $j=strlen($value); $i<$j; $i++){
+   				if($value[$i]=='1'){
+   					echo "</br>";
+    				echo $key;
+    				echo "</br>";
+    				echo (int)($i/31+1);
+    				echo "</br>";
+    				echo ($i%31)+1;
+    				echo "</br>";
+   				}
+   			}
+   		}
+   	}
+
+   	function insertDate($arr=array(), $id, $name, $con){
+		$flag = true;
+		foreach ($arr as $key => $value){
+			for($i=0, $j=strlen($value); $i<$j; $i++){
+				if($value[$i]=='1'){
+					$month = (int)($i/31+1);
+					$day = ($i%31)+1 ;
+					
+					$insert = "INSERT INTO calender_choose(id, name, year, month, day) 
+				 		 VALUES ('{$id}', '{$name}', '{$key}', '{$month}', '{$day}')";
+				 	$result = mysql_query($insert, $con);//执行insert语句
+				 	//判断执行结果
+				 	if($result){}
+				 	else{
+				 		$flag = false;
+				 	}
+
+				}
+			}
+		}
+		if($flag){
+			echo "<script>alert('数据保存成功！');</script>";
+		}
+		else{
+			echo "<script>alert('数据保存失败！');</script>";
+		}
+	}
 
 ?>
