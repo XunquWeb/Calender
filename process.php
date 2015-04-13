@@ -13,6 +13,8 @@
     $datestring[0] = $_POST['date_push0'];
     $datestring[1] = $_POST['date_push1'];
     $datestring[2] = $_POST['date_push2'];
+    var_dump($datestring);
+    var_dump($_POST);
 
    
     for($i=0,$j=strlen($datestring[0]);$i<$j;$i++){
@@ -39,7 +41,7 @@
     		echo "</br>";
     	}
 	}
-	for($i=0,$j=strlen($datestring[3]);$i<$j;$i++){
+	for($i=0,$j=strlen($datestring[2]);$i<$j;$i++){
     	if($datestring[2][$i]=='1')
     	{
     		echo "</br>";
@@ -54,7 +56,7 @@
 
 
 
-	$con = mysql_connect('localhost', 'root', '123456')
+	$con = mysql_connect('localhost', 'root', '')
 		or die("fail1");
 	mysql_select_db('xunqu')
 		or die("fail2");
@@ -82,7 +84,7 @@
     		$month = (int)($i/31+1);
     		$day = ($i%31)+1 ;
     		$insert = "INSERT INTO calender_choose(id, name, year, month, day) 
-				 		 VALUES ('{$id}', '{$name}', '2015', '{$month}', '{$day})'";
+				 		 VALUES ('{$id}', '{$name}', '2015', '{$month}', '{$day}')";
     		$result=mysql_query($insert,$con);//执行insert语句
 			//判断执行结果
 			if($result){
@@ -110,7 +112,7 @@
 			}
 	    }
 	}
-	for($i=0,$j=strlen($datestring[3]);$i<$j;$i++){
+	for($i=0,$j=strlen($datestring[2]);$i<$j;$i++){
     	if($datestring[2][$i]=='1')
     	{
     		$month = (int)($i/31+1);
@@ -118,12 +120,13 @@
     		$insert = "INSERT INTO calender_choose(id, name, year, month, day) 
 				 		 VALUES ('{$id}', '{$name}', '2017', '{$month}', '{$day}')";
     		$result=mysql_query($insert,$con);//执行insert语句
+
 			//判断执行结果
 			if($result){
-				echo "<script>alert('注册成功！');</script>";
+				echo '<script>alert("注册成功！！");</script>';
 			}
 			else{
-				echo "<script>alert('注册失败！');</script>";
+				echo '<script>alert("注册失败！！");</script>';
 			}
    		}
 	}
