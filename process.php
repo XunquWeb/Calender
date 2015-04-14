@@ -56,7 +56,7 @@
 
 
 
-	$con = mysql_connect('localhost', 'root', '')
+	$con = mysql_connect('localhost', 'root', '123456')
 		or die("fail1");
 	mysql_select_db('xunqu')
 		or die("fail2");
