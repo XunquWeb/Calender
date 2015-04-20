@@ -57,6 +57,11 @@ Calender = function(){
 			var dateelements = $('#' + config.cal_id + ' .cal_date_content span').not('.cal_date_gone');
 			$('#' + config.cal_id + ' .cal_month').html(cur_month+1 + "月 " + cur_year);
 			if (now.getFullYear() == cur_year && now.getMonth() == cur_month) {dateelements.filter(':contains(' + now.getDate() + ')').eq(0).attr("class", "cal_date_now");}
+			for(x in trans_buf){
+				if(trans_buf[x].getFullYear()==cur_year&&trans_buf[x].getMonth()==cur_month){
+					dateelements[trans_buf[x].getDate()-1].className+=' cal_date_choice';
+				}
+			}
 			//hover效果
 			dateelements.bind('mouseenter', function(){$(this).addClass('cal_date_hover');});
 			dateelements.bind('mouseleave', function(){dateelements.removeClass('cal_date_hover');});
