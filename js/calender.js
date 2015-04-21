@@ -67,7 +67,7 @@ Calender = function(){
 			dateelements.bind('mouseleave', function(){dateelements.removeClass('cal_date_hover');});
 			//点击事件
 			dateelements.bind('click', function(){
-				if($(this).attr('class').indexOf('cal_date_choice')){
+				if($(this).attr('class').indexOf('cal_date_choice')==-1){
 					$(this).addClass('cal_date_choice');
 					trans_buf.push(new Date(cur_year,cur_month,parseInt($(this).text())));
 				}else{
