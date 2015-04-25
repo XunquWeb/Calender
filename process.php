@@ -67,7 +67,7 @@
 	mysql_query(
 		"
 			CREATE TABLE IF NOT EXISTS `calender_choose` (
-			  `id` int(11) NOT NULL,
+			  `id` bigint(11) NOT NULL,
 			  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 			  `year` int(10) NOT NULL,
 			  `month` int(10) NOT NULL,
@@ -77,6 +77,7 @@
 	)
 	or die("fail3");
 
+	checkID($id,$con);
 	insertDate($datestring, $id, $name, $con);
 
 
@@ -126,6 +127,25 @@
 		else{
 			echo "<script>alert('数据保存失败！');</script>";
 		}
+	}
+
+	function checkId($id, $con){		
+		$sql = "SELECT year, month, day 
+			FROM calender_choose 
+			WHERE id = {$id}";
+		$result = mysql_query($sql, $con);
+		
+		if(mysql_num_rows($result)){
+			echo "<script>alert(\"原来选择的日期将会被覆盖:";
+			while($row = mysql_fetch_array($result)){
+				echo "{$row['year']}/{$row['month']}/{$row['day']}  ";
+			}
+			echo "\");</script>";
+		}
+		
+		$sql = "DELETE FROM calender_choose 
+			WHERE id = {$id}";
+		$result =  mysql_query($sql, $con);
 	}
 
 ?>
