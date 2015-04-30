@@ -17,14 +17,8 @@ Calender = function(){
 			$.extend(true, config, customConfig);
 			$('#' + config.cal_id).append(html_content);
 			$('#' + config.cal_id + ' .cal_top').html(text_top);
-			$('#' + config.cal_id + ' .cal_bt_month_left').bind('click',function(){
-				if(--cur_month<0){cur_month=11;--cur_year;}
-				that.getDateList();
-			});
-			$('#' + config.cal_id + ' .cal_bt_month_right').bind('click',function(){
-				if(++cur_month==12){cur_month=0;++cur_year;}
-				that.getDateList();
-			});
+			$('#' + config.cal_id + ' .cal_bt_month_left').bind('click',function(){if(--cur_month<0){cur_month=11;--cur_year;}that.getDateList();	});
+			$('#' + config.cal_id + ' .cal_bt_month_right').bind('click',function(){if(++cur_month==12){cur_month=0;++cur_year;}that.getDateList();});
 			//notice relative:getDateList 'not standard'
 			$('#' + config.cal_id + ' .cal_bt_year_left').bind('click',function(){that.getDateList(--cur_year);});
 			$('#' + config.cal_id + ' .cal_bt_year_right').bind('click',function(){that.getDateList(++cur_year);});
@@ -33,9 +27,13 @@ Calender = function(){
 		//warning to add parameter relative:getDateList
 		getDateList: function() {
 			var strCont ='';
-			for (j=-new Date(cur_year,cur_month,1).getDay();j;j++) {strCont += '<span class="cal_date_gone">&nbsp;</span>';}
-			var monthdays = new Date(cur_year,cur_month+1,0).getDate();
+			var j=-new Date(cur_year,cur_month,1).getDay();
+			for (var u=new Date(cur_year,cur_month,j+1).getDate();j;j++) {strCont += '<span class="cal_date_gone">' + u++ + '</span>';}
+			var end=new Date(cur_year,cur_month+1,0);
+			var monthdays = end.getDate();
 			while(++j<= monthdays){strCont += '<span>' + j + '</span>';}
+			j=end.getDay();
+			for(var u=1;j<6;j++){strCont += '<span class="cal_date_gone">' + u++ + '</span>';}
 			$('#' + config.cal_id + ' .cal_date_content').html(strCont);
 			var dateelements = $('#' + config.cal_id + ' .cal_date_content span').not('.cal_date_gone');
 			//title line
@@ -47,6 +45,8 @@ Calender = function(){
 			//delete next two lines to disable the hover
 			dateelements.bind('mouseenter', function(){$(this).addClass('cal_date_hover');});
 			dateelements.bind('mouseleave', function(){dateelements.removeClass('cal_date_hover');});
+			//sign Sunday
+			for(var u=monthdays-end.getDay()-1;u>=0;u=u-7){dateelements[u].className+=" cal_sunday";}
 			dateelements.bind('click', function(){
 				if($(this).attr('class').indexOf('cal_date_choice')==-1){
 					$(this).addClass('cal_date_choice');
